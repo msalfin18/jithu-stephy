@@ -1,0 +1,4 @@
+npm run build[33m7726c24[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: checkout: moving from msalfin18-patch-1 to main
+[33mcdda298[m[33m ([m[1;31morigin/msalfin18-patch-1[m[33m, [m[1;32mmsalfin18-patch-1[m[33m)[m HEAD@{1}: commit: Update wedding gallery
+[33m6cfe4c8[m HEAD@{2}: checkout: moving from main to msalfin18-patch-1
+[33m7726c24[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{3}: commit (initial): Initial commit - Wedding website
