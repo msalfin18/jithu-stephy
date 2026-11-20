@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /wishes/{wishId} {
+      // Anyone can read approved wishes (or wishes without a status field)
+      allow read: if resource.data.status == 'approved' || !('status' in resource.data);
+
+      // Anyone can submit a wish, automatically saved with status == 'approved'
+      allow create: if request.resource.data.status == 'approved'
+                    && request.resource.data.name is string
+                    && request.resource.data.message is string;
+
+      // Only admins (via Admin SDK) can update or delete
+      allow update, delete: if false;
+    }
+  }
+}
+
