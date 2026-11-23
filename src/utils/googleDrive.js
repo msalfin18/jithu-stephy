@@ -65,7 +65,7 @@ export function getDriveThumbnailUrl(input, width = 800) {
 }
 
 /**
- * Generates a secondary thumbnail fallback using Drive's thumbnail API.
+ * Generates a secondary thumbnail fallback using Drive's direct view endpoint.
  * @param {string|object} input 
  * @param {number} width 
  * @returns {string}
@@ -73,7 +73,7 @@ export function getDriveThumbnailUrl(input, width = 800) {
 export function getDriveFallbackThumbnailUrl(input, width = 800) {
   const fileId = extractDriveId(input);
   if (!fileId) return typeof input === 'string' ? input : input?.src || '';
-  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${width}`;
+  return `https://drive.usercontent.google.com/download?id=${fileId}&export=view`;
 }
 
 /**

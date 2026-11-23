@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Download, Check, Loader2, ImageOff, ExternalLink } from 'lucide-react';
 import {
   extractDriveId,
@@ -25,10 +25,17 @@ export default function GalleryImage({
     : (image.thumbnailUrl || image.src || image.url);
 
   const fallbackSrc = fileId
-    ? (image.fallbackUrl || getDriveFallbackThumbnailUrl(fileId, 800))
+    ? (image.fallbackUrl && !image.fallbackUrl.startsWith('/images/') ? image.fallbackUrl : getDriveFallbackThumbnailUrl(fileId, 800))
     : (image.src || image.url);
 
   const [currentSrc, setCurrentSrc] = useState(primarySrc);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setLoadState('loaded');
+    }
+  }, [currentSrc]);
 
   const handleImageLoad = () => {
     setLoadState('loaded');
@@ -37,12 +44,6 @@ export default function GalleryImage({
   const handleImageError = () => {
     if (currentSrc === primarySrc && fallbackSrc !== primarySrc) {
       setCurrentSrc(fallbackSrc);
-      setLoadState('fallback');
-    } else if (image.fallbackUrl && currentSrc !== image.fallbackUrl) {
-      setCurrentSrc(image.fallbackUrl);
-      setLoadState('fallback');
-    } else if (currentSrc === fallbackSrc && image.url && image.url !== fallbackSrc) {
-      setCurrentSrc(image.url);
       setLoadState('fallback');
     } else {
       setLoadState('error');
@@ -79,13 +80,15 @@ export default function GalleryImage({
 
         {loadState !== 'error' ? (
           <img
+            ref={imgRef}
             src={currentSrc}
             alt={image.alt || image.title || 'Wedding photograph'}
             loading="lazy"
             decoding="async"
+            referrerPolicy="no-referrer"
             onLoad={handleImageLoad}
             onError={handleImageError}
-            className={`gallery-img ${loadState === 'loaded' ? 'is-loaded' : ''}`}
+            className={`gallery-img ${loadState === 'loaded' || loadState === 'fallback' ? 'is-loaded' : ''}`}
           />
         ) : (
           <div className="gallery-item-error-fallback">

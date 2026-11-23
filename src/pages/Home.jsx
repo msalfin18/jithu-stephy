@@ -28,21 +28,21 @@ const navCards = [
     desc: 'How it all began',
     to: '/story',
     image: 'https://lh3.googleusercontent.com/d/1kY33oxcJjUO__-V97DL40Qj2xTd9G09U=w800',
-    fallbackImage: '/images/IMG_4252.JPEG',
+    fallbackImage: 'https://drive.usercontent.google.com/download?id=1kY33oxcJjUO__-V97DL40Qj2xTd9G09U&export=view',
   },
   {
     title: 'Gallery',
     desc: 'Captured moments',
     to: '/gallery',
     image: 'https://lh3.googleusercontent.com/d/15Q1_I1xzfoNUQ1s43qel-yPGp7QVXD5V=w800',
-    fallbackImage: '/images/IMG_4244.JPEG',
+    fallbackImage: 'https://drive.usercontent.google.com/download?id=15Q1_I1xzfoNUQ1s43qel-yPGp7QVXD5V&export=view',
   },
   {
     title: 'Wishes',
     desc: 'Love and blessings',
     to: '/wishes',
     image: 'https://lh3.googleusercontent.com/d/1XOP7dUB0T2M30Oh03HxvHQIPVqMGswK9=w800',
-    fallbackImage: '/images/IMG_4255.JPEG',
+    fallbackImage: 'https://drive.usercontent.google.com/download?id=1XOP7dUB0T2M30Oh03HxvHQIPVqMGswK9&export=view',
   },
 ];
 
@@ -56,7 +56,9 @@ export default function Home() {
             src={siteData.heroImage}
             alt="Wedding hero"
             fetchPriority="high"
+            referrerPolicy="no-referrer"
             onError={(e) => {
+              e.currentTarget.onerror = null;
               if (siteData.heroImageFallback && e.currentTarget.src !== siteData.heroImageFallback) {
                 e.currentTarget.src = siteData.heroImageFallback;
               }
@@ -144,7 +146,9 @@ export default function Home() {
                 alt="Couple portrait"
                 loading="lazy"
                 decoding="async"
+                referrerPolicy="no-referrer"
                 onError={(e) => {
+                  e.currentTarget.onerror = null;
                   if (siteData.welcomeImageFallback && e.currentTarget.src !== siteData.welcomeImageFallback) {
                     e.currentTarget.src = siteData.welcomeImageFallback;
                   }
@@ -218,7 +222,9 @@ export default function Home() {
                     alt={card.title}
                     loading="lazy"
                     decoding="async"
+                    referrerPolicy="no-referrer"
                     onError={(e) => {
+                      e.currentTarget.onerror = null;
                       if (card.fallbackImage && e.currentTarget.src !== card.fallbackImage) {
                         e.currentTarget.src = card.fallbackImage;
                       }

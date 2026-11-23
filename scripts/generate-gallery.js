@@ -277,7 +277,7 @@ function generate() {
         thumbnailUrl: driveInfo.thumbnailUrl,
         downloadUrl: driveInfo.downloadUrl,
         previewUrl: driveInfo.previewUrl,
-        fallbackUrl: img.url,
+        fallbackUrl: `https://drive.usercontent.google.com/download?id=${driveInfo.fileId}&export=view`,
       });
     } else {
       allImages.push({
@@ -288,7 +288,7 @@ function generate() {
         downloadUrl: img.url,
         previewUrl: img.url,
         fileId: null,
-        fallbackUrl: img.url,
+        fallbackUrl: '',
       });
     }
   }

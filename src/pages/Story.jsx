@@ -63,7 +63,9 @@ export default function Story() {
                       alt={item.title}
                       loading="lazy"
                       decoding="async"
+                      referrerPolicy="no-referrer"
                       onError={(e) => {
+                        e.currentTarget.onerror = null;
                         if (item.fallbackImage && e.currentTarget.src !== item.fallbackImage) {
                           e.currentTarget.src = item.fallbackImage;
                         }
