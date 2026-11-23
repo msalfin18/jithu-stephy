@@ -27,19 +27,22 @@ const navCards = [
     title: 'Our Story',
     desc: 'How it all began',
     to: '/story',
-    image: '/images/IMG_4252.JPEG',
+    image: 'https://lh3.googleusercontent.com/d/1kY33oxcJjUO__-V97DL40Qj2xTd9G09U=w800',
+    fallbackImage: '/images/IMG_4252.JPEG',
   },
   {
     title: 'Gallery',
     desc: 'Captured moments',
     to: '/gallery',
-    image: '/images/IMG_4244.JPEG',
+    image: 'https://lh3.googleusercontent.com/d/15Q1_I1xzfoNUQ1s43qel-yPGp7QVXD5V=w800',
+    fallbackImage: '/images/IMG_4244.JPEG',
   },
   {
     title: 'Wishes',
     desc: 'Love and blessings',
     to: '/wishes',
-    image: '/images/IMG_4255.JPEG',
+    image: 'https://lh3.googleusercontent.com/d/1XOP7dUB0T2M30Oh03HxvHQIPVqMGswK9=w800',
+    fallbackImage: '/images/IMG_4255.JPEG',
   },
 ];
 
@@ -53,6 +56,11 @@ export default function Home() {
             src={siteData.heroImage}
             alt="Wedding hero"
             fetchPriority="high"
+            onError={(e) => {
+              if (siteData.heroImageFallback && e.currentTarget.src !== siteData.heroImageFallback) {
+                e.currentTarget.src = siteData.heroImageFallback;
+              }
+            }}
           />
         </div>
         <div className="hero-overlay" />
@@ -136,6 +144,11 @@ export default function Home() {
                 alt="Couple portrait"
                 loading="lazy"
                 decoding="async"
+                onError={(e) => {
+                  if (siteData.welcomeImageFallback && e.currentTarget.src !== siteData.welcomeImageFallback) {
+                    e.currentTarget.src = siteData.welcomeImageFallback;
+                  }
+                }}
               />
             </div>
             <div className="welcome-text">
@@ -205,6 +218,11 @@ export default function Home() {
                     alt={card.title}
                     loading="lazy"
                     decoding="async"
+                    onError={(e) => {
+                      if (card.fallbackImage && e.currentTarget.src !== card.fallbackImage) {
+                        e.currentTarget.src = card.fallbackImage;
+                      }
+                    }}
                   />
                   <div className="nav-card-overlay">
                     <h3 className="nav-card-title">{card.title}</h3>

@@ -63,6 +63,11 @@ export default function Story() {
                       alt={item.title}
                       loading="lazy"
                       decoding="async"
+                      onError={(e) => {
+                        if (item.fallbackImage && e.currentTarget.src !== item.fallbackImage) {
+                          e.currentTarget.src = item.fallbackImage;
+                        }
+                      }}
                     />
                   </motion.div>
                 </div>

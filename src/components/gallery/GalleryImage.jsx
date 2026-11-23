@@ -25,7 +25,7 @@ export default function GalleryImage({
     : (image.thumbnailUrl || image.src || image.url);
 
   const fallbackSrc = fileId
-    ? getDriveFallbackThumbnailUrl(fileId, 800)
+    ? (image.fallbackUrl || getDriveFallbackThumbnailUrl(fileId, 800))
     : (image.src || image.url);
 
   const [currentSrc, setCurrentSrc] = useState(primarySrc);
@@ -37,6 +37,9 @@ export default function GalleryImage({
   const handleImageError = () => {
     if (currentSrc === primarySrc && fallbackSrc !== primarySrc) {
       setCurrentSrc(fallbackSrc);
+      setLoadState('fallback');
+    } else if (image.fallbackUrl && currentSrc !== image.fallbackUrl) {
+      setCurrentSrc(image.fallbackUrl);
       setLoadState('fallback');
     } else if (currentSrc === fallbackSrc && image.url && image.url !== fallbackSrc) {
       setCurrentSrc(image.url);

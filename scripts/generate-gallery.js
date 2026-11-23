@@ -239,17 +239,58 @@ function generate() {
   const allImages = [];
   let currentId = 1;
 
-  // Add 15 curated images with fallback URLs
+  // Load Drive metadata for curated images (drive_images_6.json & main_image.json)
+  const driveImages6Path = path.join(imagesBaseDir, 'drive_images_6.json');
+  const driveImages6List = readJsonFile(driveImages6Path);
+  const mainImagePath = path.join(imagesBaseDir, 'main_image.json');
+  const mainJsonPath = path.join(imagesBaseDir, 'main.json');
+  const mainImageList = fs.existsSync(mainImagePath)
+    ? readJsonFile(mainImagePath)
+    : (fs.existsSync(mainJsonPath) ? readJsonFile(mainJsonPath) : []);
+  const combinedList = [...driveImages6List, ...mainImageList];
+  console.log(`Processing Drive Images: ${combinedList.length} metadata entries`);
+  const driveImagesMap = new Map();
+  combinedList.forEach((item) => {
+    const filename = item.FileName || item.Name || item.Path;
+    const fileId = item.FileID || item.ID;
+    if (filename && fileId) {
+      driveImagesMap.set(filename.toLowerCase(), {
+        fileId,
+        directUrl: item.DirectURL || `https://drive.google.com/uc?export=view&id=${fileId}`,
+        previewUrl: item.PreviewURL || `https://drive.google.com/file/d/${fileId}/view`,
+        thumbnailUrl: `https://lh3.googleusercontent.com/d/${fileId}=w800`,
+        downloadUrl: `https://drive.google.com/uc?export=download&id=${fileId}`,
+      });
+    }
+  });
+
+  // Add 15 curated images with Google Drive URLs (from drive_images_6.json) and fallback URLs
   for (const img of curatedImages) {
-    allImages.push({
-      ...img,
-      id: currentId++,
-      src: img.url,
-      thumbnailUrl: img.url,
-      downloadUrl: img.url,
-      previewUrl: img.url,
-      fileId: null,
-    });
+    const driveInfo = driveImagesMap.get(img.filename.toLowerCase());
+    if (driveInfo) {
+      allImages.push({
+        ...img,
+        id: currentId++,
+        fileId: driveInfo.fileId,
+        src: driveInfo.directUrl,
+        url: driveInfo.directUrl,
+        thumbnailUrl: driveInfo.thumbnailUrl,
+        downloadUrl: driveInfo.downloadUrl,
+        previewUrl: driveInfo.previewUrl,
+        fallbackUrl: img.url,
+      });
+    } else {
+      allImages.push({
+        ...img,
+        id: currentId++,
+        src: img.url,
+        thumbnailUrl: img.url,
+        downloadUrl: img.url,
+        previewUrl: img.url,
+        fileId: null,
+        fallbackUrl: img.url,
+      });
+    }
   }
 
   // 1. Process Save The Date
